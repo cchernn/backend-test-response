@@ -49,8 +49,12 @@ def search():
                 filters.append(f"{key} == {value}")
             elif isinstance(value, str):
                 filters.append(f"{key}.str.contains(@value)")
-    query = " & ".join([q for q in filters])
-    df = df_comments.query(query)
+
+    if filters:
+        query = " & ".join([q for q in filters])
+        df = df_comments.query(query)
+    else:
+        df = df_comments
 
     result = df.to_dict(orient='records')
     return result
